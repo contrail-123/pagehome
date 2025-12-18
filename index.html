@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>轨迹魔女见闻录 - 缇娜丝·蒂基特的轨迹档案</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- ==================== 侧边栏 ==================== -->
+    <!-- 侧边栏切换按钮 -->
+    <button class="sidebar-toggle-btn" id="toggleBtn">☰</button>
+
+    <!-- 侧边栏容器 -->
+    <div id="sidebar">
+        <!-- 功能按钮组 -->
+        <div class="function-group">
+            <h3>魔法工具箱</h3>
+            <button class="function-btn" onclick="AI()">AI智能体</button>
+            <button class="function-btn" onclick="astrolabe()">星盘解读</button>
+            <button class="function-btn" onclick="loadLibrary()">大图书馆</button>
+            <button class="function-btn" onclick="wuziqi()">五子棋</button>
+            <button class="function-btn" onclick="openHeiderBalance()">海德平衡</button>
+        </div>
+    </div>
+
+    <!-- ==================== 开场动画 ==================== -->
+    <div class="loading-screen" id="loadingScreen">
+        <!-- 魔法阵主体 -->
+        <div class="magic-loader">
+            <!-- 六芒星装饰 -->
+            <div class="hexagram"></div>
+            
+            <!-- 符文环 -->
+            <div class="rune-ring">
+                <span class="rune" style="top:0; left:50%; transform:translateX(-50%);">*</span>
+                <span class="rune" style="top:15%; right:15%;">+</span>
+                <span class="rune" style="top:50%; right:0; transform:translateY(-50%);">*</span>
+                <span class="rune" style="bottom:15%; right:15%;">+</span>
+                <span class="rune" style="bottom:0; left:50%; transform:translateX(-50%);">*</span>
+                <span class="rune" style="bottom:15%; left:15%;">+</span>
+                <span class="rune" style="top:50%; left:0; transform:translateY(-50%);">*</span>
+                <span class="rune" style="top:15%; left:15%;">+</span>
+            </div>
+            
+            <!-- 魔法圆圈 -->
+            <div class="magic-circle"></div>
+            <div class="magic-circle"></div>
+            <div class="magic-circle"></div>
+            
+            <!-- 核心光球 -->
+            <div class="magic-core"></div>
+            
+            <!-- 能量粒子 -->
+            <div class="energy-particle" style="animation-delay: 0s;"></div>
+            <div class="energy-particle" style="animation-delay: 0.5s;"></div>
+            <div class="energy-particle" style="animation-delay: 1s;"></div>
+            <div class="energy-particle" style="animation-delay: 1.5s;"></div>
+            <div class="energy-particle" style="animation-delay: 2s;"></div>
+            <div class="energy-particle" style="animation-delay: 2.5s;"></div>
+            
+            <!-- 装饰星星 -->
+            <div class="star" style="top:5%; left:10%; animation-delay:0.2s;"></div>
+            <div class="star" style="top:20%; left:85%; animation-delay:0.5s;"></div>
+            <div class="star" style="top:75%; left:5%; animation-delay:0.8s;"></div>
+            <div class="star" style="top:90%; left:80%; animation-delay:1.1s;"></div>
+            <div class="star" style="top:40%; left:95%; animation-delay:1.4s;"></div>
+        </div>
+        
+        <!-- 加载文字 -->
+        <div class="loading-text">轨迹回声解禁中...</div>
+        
+        <!-- 进度条 -->
+        <div class="loading-progress"></div>
+        
+        <!-- 点击提示 -->
+        <div class="click-hint">— 点击任意处开启旅程 —</div>
+    </div>
+
+    <!-- ==================== 背景加载 ==================== -->
+    <div class="video-container">
+        <video id="bgVideo" muted loop>
+            <source src="视频/魔女苍空.MP4" type="video/mp4">
+        </video>
+    </div>
+
+    <!-- ==================== 主内容区 ==================== -->
+    <div class="header">
+        <h1>轨迹秘契结社</h1>
+        <p>——我们丈量大地时，也在被星辰丈量</p>
+        <div id="time-system" class="magic-time"></div>  <!-- 动态时间显示 -->
+    </div>
+
+    <nav class="nav">
+        <a href="#weather">今日天气</a>
+        <a href="#intro">结社介绍</a>
+        <a href="#timeline">发展轨迹</a>
+        <a href="#profile">社团档案</a>
+        <a href="#abilities">知识体系</a>
+        <a href="#artifacts">研究成果</a>
+        <a href="#link">联系方式</a>
+    </nav>
+
+    <!-- 今日天气 -->
+    <section id="weather" class="section-container weather-section">
+        <h2 class="section-title">今日天气</h2>
+        <div class="weather-container">
+            <!-- 搜索框 -->
+            <div class="weather-search-box">
+                <div class="weather-input-wrapper">
+                    <input type="text" id="cityInput" placeholder="请输入城市名称（如：北京、伦敦）">
+                </div>
+                <button class="weather-search-btn" onclick="getWeather()">查询天气</button>
+            </div>
+            
+            <!-- 天气信息显示区域 -->
+            <div id="weatherInfo" class="weather-display"></div>
+        </div>
+    </section>
+
+    <!-- 结社介绍 -->
+    <section id="intro" class="section-container">
+        <h2 class="section-title">结社介绍</h2>
+        <div class="grid-layout">
+            <div class="text-content">
+                <h3>轨迹秘契结社</h3>
+                <p>​​轨迹秘契结社（The Society of Arcane Trajectories）成立于2024年，是一个以多元化的理性视角，探索未知领域，记录社群变化，明晰矛盾本质的虚拟交流社群。</p>
+            
+                <div class="magic-list">
+                    <div class="magic-item">
+                        <div class="magic-icon"></div>
+                        <h4>核心宗旨</h4>
+                        <p>「观测不干涉，记录不篡改」——宿命难逆，我们只是见证者与记录者。</p>
+                    </div>
+                
+                    <div class="magic-item">
+                        <div class="magic-icon"></div>
+                        <h4>社团标签</h4>
+                        <ul>
+                            <li>学术研究</li>
+                            <li>社会观察</li>
+                            <li>神秘主义</li>
+                            <li>文化记录</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- 图片占位 -->
+            <div class="image-container">
+                <div class="magic-frame">
+                    <div class="image-content" 
+                         style="background-image: url('图片/主界面/1.png')">
+                        <div class="glow-layer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 发展轨迹 -->
+    <section id="timeline" class="section-container">
+        <h2 class="section-title">轨迹见闻</h2>
+        <div class="timeline">
+            <!-- 时间轴线 -->
+            <div class="timeline-line"></div>
+        
+            <!-- 时间轴条目 -->
+            <div class="timeline-item enhanced">
+                <div class="timeline-marker">
+                    <span class="timeline-year">2021</span>
+                </div>
+                <div class="timeline-content">
+                    <h3>虚拟之行</h3>
+                    <p>开始接触虚拟世界（VRC），缇娜丝·蒂基特的角色形象在此萌芽。</p>
+                    <div class="timeline-image" style="background-image: url('图片/主界面/7.png')">
+                        <div class="glow-layer"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item enhanced">
+                <div class="timeline-marker">
+                    <span class="timeline-year">2022</span>
+                </div>
+                <div class="timeline-content">
+                    <h3>神秘之行</h3>
+                    <p>神秘学的启蒙之年，缇娜丝开启了对世界认知的新大门。</p>
+                    <div class="timeline-image" style="background-image: url('图片/主界面/8.png')">
+                        <div class="glow-layer"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item enhanced">
+                <div class="timeline-marker">
+                    <span class="timeline-year">2023</span>
+                </div>
+                <div class="timeline-content">
+                    <h3>观察之行</h3>
+                    <p>从集体无意识、符号秩序到虚拟民族志，轨迹在观测下悄然显现</p>
+                    <div class="timeline-image" style="background-image: url('图片/主界面/9.png')">
+                        <div class="glow-layer"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item enhanced">
+                <div class="timeline-marker">
+                    <span class="timeline-year">2024</span>
+                </div>
+                <div class="timeline-content">
+                    <h3>结社成立</h3>
+                    <p>轨迹秘契结社正式成立，开始系统记录元宇宙的轨迹变化。</p>
+                    <div class="timeline-image" style="background-image: url('图片/主界面/1.png')">
+                        <div class="glow-layer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <!-- 社团档案 -->
+    <section id="profile" class="section-container">
+        <h2 class="section-title">社团档案</h2>
+        <p style="text-align:center; color:#5f9ea0; font-size:1.1rem; margin-bottom:2rem; font-style:italic;">
+            VRChat元宇宙中的社群观察记录 · 持续更新中
+        </p>
+        
+        <!-- 中文社区 -->
+        <div class="community-section">
+            <div class="community-header" onclick="toggleCommunity(this)">
+                <div class="community-title">
+                    <span class="community-icon">🇨🇳</span>
+                    <span class="community-name">中文社区</span>
+                    <span class="community-count">(6)</span>
+                </div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="guild-archive">
+                <!-- 小型社团名片 1 -->
+                <div class="guild-mini-card" onclick="openGuildDetail(0)">
+                    <div class="guild-mini-icon">🥊</div>
+                    <div class="guild-mini-info">
+                        <h4 class="guild-mini-name">VRC中文拳击社</h4>
+                        <p class="guild-mini-subtitle">VRChat Chinese Boxing Club</p>
+                    </div>
+                </div>
+
+                <!-- 小型社团名片 2 -->
+                <div class="guild-mini-card" onclick="openGuildDetail(1)">
+                    <div class="guild-mini-icon">💻</div>
+                    <div class="guild-mini-info">
+                        <h4 class="guild-mini-name">VRCD-虚拟现实开发者社团</h4>
+                        <p class="guild-mini-subtitle">VRChat Developers Community</p>
+                    </div>
+                </div>
+
+                <!-- 小型社团名片 3 -->
+                <div class="guild-mini-card" onclick="openGuildDetail(2)">
+                    <div class="guild-mini-icon">🎵</div>
+                    <div class="guild-mini-info">
+                        <h4 class="guild-mini-name">CIMS中文器乐社团</h4>
+                        <p class="guild-mini-subtitle">Chinese Instrumental Music Society</p>
+                    </div>
+                </div>
+
+                <!-- 小型社团名片 4 -->
+                <div class="guild-mini-card" onclick="openGuildDetail(3)">
+                    <div class="guild-mini-icon">🎤</div>
+                    <div class="guild-mini-info">
+                        <h4 class="guild-mini-name">中文歌友会</h4>
+                        <p class="guild-mini-subtitle">Chinese Music Society</p>
+                    </div>
+                </div>
+
+                <!-- 小型社团名片 5 -->
+                <div class="guild-mini-card" onclick="openGuildDetail(4)">
+                    <div class="guild-mini-icon">🔮</div>
+                    <div class="guild-mini-info">
+                        <h4 class="guild-mini-name">塔罗占卜俱乐部</h4>
+                        <p class="guild-mini-subtitle">Tarot Divination Club</p>
+                    </div>
+                </div>
+
+                <!-- 小型社团名片 6 -->
+                <div class="guild-mini-card" onclick="openGuildDetail(5)">
+                    <div class="guild-mini-icon">🍷</div>
+                    <div class="guild-mini-info">
+                        <h4 class="guild-mini-name">魔女秘境</h4>
+                        <p class="guild-mini-subtitle">Witch's Secret Realm</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 日语社区 -->
+        <div class="community-section">
+            <div class="community-header" onclick="toggleCommunity(this)">
+                <div class="community-title">
+                    <span class="community-icon">🇯🇵</span>
+                    <span class="community-name">日语社区</span>
+                    <span class="community-count">(1)</span>
+                </div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="guild-archive">
+                <!-- 小型社团名片 1 -->
+                <div class="guild-mini-card" onclick="openGuildDetail(6)">
+                    <div class="guild-mini-icon">🎧</div>
+                    <div class="guild-mini-info">
+                        <h4 class="guild-mini-name">ASMR集会</h4>
+                        <p class="guild-mini-subtitle">ASMR Assembly</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 韩语社区 -->
+        <div class="community-section">
+            <div class="community-header" onclick="toggleCommunity(this)">
+                <div class="community-title">
+                    <span class="community-icon">🇰🇷</span>
+                    <span class="community-name">韩语社区</span>
+                    <span class="community-count">(0)</span>
+                </div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="guild-archive">
+                <div class="empty-placeholder">暂无记录，持续观察中...</div>
+            </div>
+        </div>
+
+        <!-- 英文社区 -->
+        <div class="community-section">
+            <div class="community-header" onclick="toggleCommunity(this)">
+                <div class="community-title">
+                    <span class="community-icon">🇬🇧</span>
+                    <span class="community-name">英文社区</span>
+                    <span class="community-count">(0)</span>
+                </div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="guild-archive">
+                <div class="empty-placeholder">暂无记录，持续观察中...</div>
+            </div>
+        </div>
+
+        <!-- 法语社区 -->
+        <div class="community-section">
+            <div class="community-header" onclick="toggleCommunity(this)">
+                <div class="community-title">
+                    <span class="community-icon">🇫🇷</span>
+                    <span class="community-name">法语社区</span>
+                    <span class="community-count">(0)</span>
+                </div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="guild-archive">
+                <div class="empty-placeholder">暂无记录，持续观察中...</div>
+            </div>
+        </div>
+
+        <!-- 俄语社区 -->
+        <div class="community-section">
+            <div class="community-header" onclick="toggleCommunity(this)">
+                <div class="community-title">
+                    <span class="community-icon">🇷🇺</span>
+                    <span class="community-name">俄语社区</span>
+                    <span class="community-count">(1)</span>
+                </div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="guild-archive">
+                <!-- 小型社团名片 1 -->
+                <div class="guild-mini-card" onclick="openGuildDetail(7)">
+                    <div class="guild-mini-icon">☕</div>
+                    <div class="guild-mini-info">
+                        <h4 class="guild-mini-name">Koi no Niwa</h4>
+                        <p class="guild-mini-subtitle">恋の庭 · 爱之庭园女仆咖啡厅</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 德语社区 -->
+        <div class="community-section">
+            <div class="community-header" onclick="toggleCommunity(this)">
+                <div class="community-title">
+                    <span class="community-icon">🇩🇪</span>
+                    <span class="community-name">德语社区</span>
+                    <span class="community-count">(0)</span>
+                </div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="guild-archive">
+                <div class="empty-placeholder">暂无记录，持续观察中...</div>
+            </div>
+        </div>
+
+        <!-- 阿拉伯社区 -->
+        <div class="community-section">
+            <div class="community-header" onclick="toggleCommunity(this)">
+                <div class="community-title">
+                    <span class="community-icon">🇸🇦</span>
+                    <span class="community-name">阿拉伯社区</span>
+                    <span class="community-count">(0)</span>
+                </div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="guild-archive">
+                <div class="empty-placeholder">暂无记录，持续观察中...</div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- 知识体系 -->
+    <section id="abilities" class="section-container">
+        <h2 class="section-title">知识体系</h2>
+        <p style="text-align:center; color:#5f9ea0; font-size:1.1rem; margin-bottom:2rem; font-style:italic;">
+            探索古老智慧与当代理论的交织 · 持续更新中
+        </p>
+        
+        <!-- 神秘学传统 -->
+        <div class="knowledge-category-section">
+            <div class="knowledge-category-header" onclick="toggleKnowledgeCategory(this)">
+                <div class="knowledge-category-title">
+                    <span class="knowledge-category-name">神秘学传统</span>
+                    <span class="knowledge-category-count">(6)</span>
+                </div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="knowledge-book-shelf">
+                <!-- 书本样式卡片 1 -->
+                <div class="knowledge-book-card" onclick="openKnowledgeDetail(0)">
+                    <div class="book-spine">
+                        <div class="book-title">卢恩符文</div>
+                        <div class="book-subtitle">Runes</div>
+                        <div class="book-subtitle-cn">北欧神秘传统</div>
+                    </div>
+                </div>
+
+                <!-- 书本样式卡片 2 -->
+                <div class="knowledge-book-card" onclick="openKnowledgeDetail(1)">
+                    <div class="book-spine">
+                        <div class="book-title">德鲁伊传统</div>
+                        <div class="book-subtitle">Druidry</div>
+                        <div class="book-subtitle-cn">凯尔特自然智慧</div>
+                    </div>
+                </div>
+
+                <!-- 书本样式卡片 3 -->
+                <div class="knowledge-book-card" onclick="openKnowledgeDetail(2)">
+                    <div class="book-spine">
+                        <div class="book-title">威卡传统</div>
+                        <div class="book-subtitle">Wicca</div>
+                        <div class="book-subtitle-cn">现代巫术复兴</div>
+                    </div>
+                </div>
+
+                <!-- 书本样式卡片 4 -->
+                <div class="knowledge-book-card" onclick="openKnowledgeDetail(8)">
+                    <div class="book-spine">
+                        <div class="book-title">炼金术</div>
+                        <div class="book-subtitle">Alchemy</div>
+                        <div class="book-subtitle-cn">转化的艺术</div>
+                    </div>
+                </div>
+
+                <!-- 书本样式卡片 5 -->
+                <div class="knowledge-book-card" onclick="openKnowledgeDetail(9)">
+                    <div class="book-spine">
+                        <div class="book-title">占星术</div>
+                        <div class="book-subtitle">Astrology</div>
+                        <div class="book-subtitle-cn">星辰的智慧</div>
+                    </div>
+                </div>
+
+                <!-- 书本样式卡片 6 -->
+                <div class="knowledge-book-card" onclick="openKnowledgeDetail(10)">
+                    <div class="book-spine">
+                        <div class="book-title">卡巴拉</div>
+                        <div class="book-subtitle">Kabbalah</div>
+                        <div class="book-subtitle-cn">生命之树</div>
+                    </div>
+                </div>
+            </div>
+        </div>div>
+
+        <!-- 理论研究 -->
+        <div class="knowledge-category-section">
+            <div class="knowledge-category-header" onclick="toggleKnowledgeCategory(this)">
+                <div class="knowledge-category-title">
+                    <span class="knowledge-category-name">理论研究</span>
+                    <span class="knowledge-category-count">(5)</span>
+                </div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="knowledge-book-shelf">
+                <!-- 书本样式卡片 1 -->
+                <div class="knowledge-book-card" onclick="openKnowledgeDetail(3)">
+                    <div class="book-spine">
+                        <div class="book-title">荣格心理学</div>
+                        <div class="book-subtitle">Carl Jung</div>
+                        <div class="book-subtitle-cn">集体无意识理论</div>
+                    </div>
+                </div>
+
+                <!-- 书本样式卡片 2 -->
+                <div class="knowledge-book-card" onclick="openKnowledgeDetail(4)">
+                    <div class="book-spine">
+                        <div class="book-title">拉康精神分析</div>
+                        <div class="book-subtitle">Jacques Lacan</div>
+                        <div class="book-subtitle-cn">符号秩序理论</div>
+                    </div>
+                </div>
+
+                <!-- 书本样式卡片 3 -->
+                <div class="knowledge-book-card" onclick="openKnowledgeDetail(5)">
+                    <div class="book-spine">
+                        <div class="book-title">福柯权力理论</div>
+                        <div class="book-subtitle">Michel Foucault</div>
+                        <div class="book-subtitle-cn">知识考古学</div>
+                    </div>
+                </div>
+
+                <!-- 书本样式卡片 4 -->
+                <div class="knowledge-book-card" onclick="openKnowledgeDetail(6)">
+                    <div class="book-spine">
+                        <div class="book-title">海德平衡理论</div>
+                        <div class="book-subtitle">Fritz Heider</div>
+                        <div class="book-subtitle-cn">认知一致性</div>
+                    </div>
+                </div>
+
+                <!-- 书本样式卡片 5 -->
+                <div class="knowledge-book-card" onclick="openKnowledgeDetail(7)">
+                    <div class="book-spine">
+                        <div class="book-title">虚拟民族志</div>
+                        <div class="book-subtitle">Virtual Ethnography</div>
+                        <div class="book-subtitle-cn">数字田野调查</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- 研究成果 -->
+    <section id="artifacts" class="section-container">
+        <h2 class="section-title">研究成果</h2>
+        <div class="artifact-grid">
+
+            <div class="artifact-card mbti-research-card" onclick="openMBTIResearch()">
+                <div class="artifact-image"
+                     style="background-image: url('图片/主界面/9.png')"></div>
+                <div class="mbti-card-overlay">
+                    <div class="mbti-card-icon">📊</div>
+                    <h4>VRChat 荣格衍生模型调研</h4>
+                    <p>基于 MBTI 的虚拟社群人格分布研究</p>
+                    <div class="mbti-card-stats">
+                        <span>样本数：400+</span>
+                        <span>MBTI类型：16种</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section></div>
+
+    <!-- 联系方式 -->
+    <section id="link" class="section-container">
+        <h2 class="section-title">联系方式</h2>
+        <div class="artifact-grid">
+
+            <!-- 更多秘宝卡片... -->
+        </div>
+    </section>
+
+    <!-- ==================== 音乐播放器 ==================== -->
+    <div class="music-control collapsed">
+        <div class="music-header">
+            <h4 class="music-title">
+                <span>♪</span>
+                <span>魔法旋律</span>
+            </h4>
+            <div class="music-controls-header">
+                <button class="toggle-collapse-btn" onclick="toggleCollapse()">▼</button>
+            </div>
+        </div>
+        
+        <div class="collapsible-content">
+            <!-- 播放控制按钮 -->
+            <div class="music-action-buttons">
+                <button class="music-action-btn" onclick="toggleMode()" title="切换播放模式">
+                    <span id="mode-icon">↻</span>
+                </button>
+                <button class="music-action-btn play-btn" onclick="toggleMusic()" title="播放/暂停">
+                    <span id="play-icon">▶</span>
+                </button>
+            </div>
+
+            <!-- 歌曲列表 -->
+            <ul class="song-list">
+                <li data-url="音乐/Constant Moderato.MP3" data-title="Constant Moderato">Constant Moderato</li>
+                <li data-url="音乐/恋风.MP3" data-title="恋风">恋风</li>
+                <li data-url="音乐/雪玫瑰的誓约.MP3" data-title="雪玫瑰的誓约">雪玫瑰的誓约</li>
+                <li data-url="音乐/缘刃之歌.MP3" data-title="缘刃之歌">缘刃之歌</li>
+            </ul>
+
+            <!-- 当前播放信息 -->
+            <div class="music-info">
+                <div id="current-song" style="text-align:center;margin-bottom:8px;font-weight:600;">当前曲目：Constant Moderato</div>
+                <div class="time-display">
+                    <span id="current-time">00:00</span>
+                    <span id="duration">00:00</span>
+                </div>
+            </div>
+
+            <!-- 进度条 -->
+            <input type="range" id="progress" value="0" oninput="seekAudio(this.value)">
+            
+            <!-- 音量控制 -->
+            <div class="volume-control">
+                <span>🔊</span>
+                <input type="range" id="volume" min="0" max="1" step="0.01" value="0.1" 
+                       oninput="adjustVolume(this.value)" style="width:70%">
+            </div>
+        </div>
+
+        <audio id="magic-bgm" ontimeupdate="updateProgress()" onloadedmetadata="updateDuration()">
+            您的浏览器不支持音频播放
+        </audio>
+    </div>
+
+    <!-- ==================== 塔罗牌系统 ==================== -->
+    <div class="tarot-section">
+        <button class="tarot-btn" onclick="drawTarot()">今日运势占卜</button>
+    </div>
+
+    <div class="tarot-card-container" id="tarotContainer">
+        <!-- 弹窗标题 -->
+        <div class="tarot-modal-header">
+            <h2 class="tarot-modal-title">今日运势占卜</h2>
+            <p class="tarot-modal-subtitle">点击卡牌揭示命运的指引</p>
+        </div>
+        
+        <!-- 三张塔罗牌 -->
+        <div class="tarot-triple">
+            <div class="tarot-card" data-position="过去">
+                <div class="tarot-card-face tarot-front">
+                    <span class="card-star">*</span>
+                </div>
+                <div class="tarot-card-face tarot-back">
+                    <img class="tarot-image" src="" alt="塔罗牌">
+                    <div class="tarot-reading">
+                        <h3 class="tarot-name"></h3>
+                        <p class="tarot-meaning"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="tarot-card" data-position="现在">
+                <div class="tarot-card-face tarot-front">
+                    <span class="card-star">*</span>
+                </div>
+                <div class="tarot-card-face tarot-back">
+                    <img class="tarot-image" src="" alt="塔罗牌">
+                    <div class="tarot-reading">
+                        <h3 class="tarot-name"></h3>
+                        <p class="tarot-meaning"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="tarot-card" data-position="未来">
+                <div class="tarot-card-face tarot-front">
+                    <span class="card-star">*</span>
+                </div>
+                <div class="tarot-card-face tarot-back">
+                    <img class="tarot-image" src="" alt="塔罗牌">
+                    <div class="tarot-reading">
+                        <h3 class="tarot-name"></h3>
+                        <p class="tarot-meaning"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 星星粒子效果 -->
+        <div class="star-particles" id="starParticles"></div>
+        
+        <!-- AI解读区域 -->
+        <div class="ai-reading" onclick="event.stopPropagation();">
+            <h3>星辰启示</h3>
+            <div id="tarotAIReading" class="ai-content">
+                <p style="text-align:center; color:#87CEEB;">翻开三张牌后，点击下方按钮获取专属解读...</p>
+            </div>
+            <button class="tarot-ai-btn" onclick="event.stopPropagation();generateAIReading()">获取星辰解读</button>
+        </div>
+        
+        <!-- 关闭提示 -->
+        <div class="tarot-close-hint">点击空白处关闭</div>
+    </div>
+
+    <!-- ==================== 大图书馆弹窗 ==================== -->
+    <div class="library-modal" id="libraryModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeLibrary()">×</button>
+            <div class="library-header">
+                <h2>大图书馆</h2>
+                <p>The Grand Archive · 万卷典籍，智慧殿堂</p>
+                <!-- 搜索栏 -->
+                <div class="library-search">
+                    <input type="text" id="librarySearchInput" placeholder="搜索书籍名称..." oninput="searchBooks()">
+                    <button class="search-clear-btn" onclick="clearSearch()">×</button>
+                </div>
+            </div>
+            <!-- 分类导航 -->
+            <div class="library-categories">
+                <button class="category-btn active" data-category="all" onclick="filterCategory('all')"><span class="cat-name">全部</span></button>
+                <button class="category-btn" data-category="personal" onclick="filterCategory('personal')"><span class="cat-name">专著</span></button>
+                <button class="category-btn" data-category="occult" onclick="filterCategory('occult')"><span class="cat-name">神秘学</span></button>
+                <button class="category-btn" data-category="philosophy" onclick="filterCategory('philosophy')"><span class="cat-name">哲学</span></button>
+                <button class="category-btn" data-category="psychology" onclick="filterCategory('psychology')"><span class="cat-name">心理学</span></button>
+                <button class="category-btn" data-category="history" onclick="filterCategory('history')"><span class="cat-name">历史</span></button>
+                <button class="category-btn" data-category="literature" onclick="filterCategory('literature')"><span class="cat-name">文学</span></button>
+                <button class="category-btn" data-category="economics" onclick="filterCategory('economics')"><span class="cat-name">经济</span></button>
+                <button class="category-btn" data-category="law" onclick="filterCategory('law')"><span class="cat-name">法学</span></button>
+                <button class="category-btn" data-category="education" onclick="filterCategory('education')"><span class="cat-name">教育</span></button>
+                <button class="category-btn" data-category="sociology" onclick="filterCategory('sociology')"><span class="cat-name">社会学</span></button>
+                <button class="category-btn" data-category="politics" onclick="filterCategory('politics')"><span class="cat-name">政治</span></button>
+                <button class="category-btn" data-category="computer" onclick="filterCategory('computer')"><span class="cat-name">计算机</span></button>
+                <button class="category-btn" data-category="ai" onclick="filterCategory('ai')"><span class="cat-name">AI</span></button>
+                <button class="category-btn" data-category="math" onclick="filterCategory('math')"><span class="cat-name">数学</span></button>
+                <button class="category-btn" data-category="physics" onclick="filterCategory('physics')"><span class="cat-name">物理</span></button>
+                <button class="category-btn" data-category="chemistry" onclick="filterCategory('chemistry')"><span class="cat-name">化学</span></button>
+                <button class="category-btn" data-category="biology" onclick="filterCategory('biology')"><span class="cat-name">生物</span></button>
+                <button class="category-btn" data-category="astronomy" onclick="filterCategory('astronomy')"><span class="cat-name">天文</span></button>
+                <button class="category-btn" data-category="geography" onclick="filterCategory('geography')"><span class="cat-name">地理</span></button>
+                <button class="category-btn" data-category="medicine" onclick="filterCategory('medicine')"><span class="cat-name">医学</span></button>
+                <button class="category-btn" data-category="mechanical" onclick="filterCategory('mechanical')"><span class="cat-name">机械</span></button>
+                <button class="category-btn" data-category="civil" onclick="filterCategory('civil')"><span class="cat-name">土木</span></button>
+                <button class="category-btn" data-category="electrical" onclick="filterCategory('electrical')"><span class="cat-name">电气</span></button>
+                <button class="category-btn" data-category="materials" onclick="filterCategory('materials')"><span class="cat-name">材料</span></button>
+                <button class="category-btn" data-category="environment" onclick="filterCategory('environment')"><span class="cat-name">环境</span></button>
+                <button class="category-btn" data-category="agriculture" onclick="filterCategory('agriculture')"><span class="cat-name">农学</span></button>
+                <button class="category-btn" data-category="art" onclick="filterCategory('art')"><span class="cat-name">艺术</span></button>
+                <button class="category-btn" data-category="music" onclick="filterCategory('music')"><span class="cat-name">音乐</span></button>
+                <button class="category-btn" data-category="film" onclick="filterCategory('film')"><span class="cat-name">影视</span></button>
+                <button class="category-btn" data-category="sports" onclick="filterCategory('sports')"><span class="cat-name">体育</span></button>
+                <button class="category-btn" data-category="military" onclick="filterCategory('military')"><span class="cat-name">军事</span></button>
+                <button class="category-btn" data-category="religion" onclick="filterCategory('religion')"><span class="cat-name">宗教</span></button>
+                <button class="category-btn" data-category="mythology" onclick="filterCategory('mythology')"><span class="cat-name">神话</span></button>
+            </div>
+            <!-- 当前分类标题和统计 -->
+            <div class="library-status">
+                <span class="current-category">全部书籍</span>
+                <span class="book-count">共 <span id="bookCount">0</span> 本</span>
+            </div>
+            <div class="library-body">
+                <div class="library-grid-modal"></div>
+                <!-- 无搜索结果提示 -->
+                <div class="no-results" id="noResults" style="display: none;">
+                    <span class="no-results-icon">📭</span>
+                    <p>未找到相关书籍</p>
+                    <small>试试其他关键词或分类</small>
+                </div>
+            </div>
+        </div>
+        <div class="star-particles"></div>
+    </div>""
+
+    <!-- ==================== AI对话框 ==================== -->
+    <div class="ai-modal" id="aiModal">
+        <div class="ai-dialog">
+            <div class="ai-header">
+                <h3>魔女AI助手</h3>
+                <button class="close-btn" onclick="closeAIChat()">×</button>
+            </div>
+            <div class="ai-messages" id="aiMessages"></div>
+            <div class="ai-input">
+                <input type="text" id="aiInput" placeholder="输入你的问题..." 
+                       onkeypress="if(event.key === 'Enter') sendMessage()">
+                <button onclick="sendMessage()">发送</button>
+            </div>
+        </div>
+    </div>
+    <div class="ai-magic-ball" id="magicBall"></div>
+
+    <!-- ==================== 星盘系统 ==================== -->
+    <div class="astrolabe-modal" id="astrolabeModal">
+        <div class="modal-content">
+            <!-- 头部区域 -->
+            <div class="astrolabe-header">
+                <h1>本命星盘解析系统</h1>
+                <p>探索星辰轨迹，解读命运密码</p>
+                <button class="close-btn" onclick="closeAstrolabe()">✕</button>
+            </div>
+            
+            <!-- 内容区域 -->
+            <div class="astrolabe-body">
+                <div class="astrolabe-container">
+                    <!-- 输入表单 -->
+                    <div class="astro-form">
+                        <!-- 第一行：出生时间 -->
+                        <div class="input-group">
+                            <label for="birthday">
+                                <span>出生时间</span>
+                            </label>
+                            <input type="datetime-local" id="birthday" required>
+                        </div>
+
+                        <!-- 第二行：经度和纬度 -->
+                        <div class="astro-form-row">
+                            <div class="input-group">
+                                <label for="longitude">
+                                    <span>出生地经度</span>
+                                </label>
+                                <input type="number" id="longitude" step="0.0001" value="121.47" required placeholder="如：121.47（东经为正）">
+                            </div>
+
+                            <div class="input-group">
+                                <label for="latitude">
+                                    <span>出生地纬度</span>
+                                </label>
+                                <input type="number" id="latitude" step="0.0001" value="31.23" required placeholder="如：31.23（北纬为正）">
+                            </div>
+                        </div>
+
+                        <!-- 第三行：时区和宫位系统 -->
+                        <div class="astro-form-row">
+                            <div class="input-group">
+                                <label for="tz">
+                                    <span>时区</span>
+                                </label>
+                                <input type="number" id="tz" value="8" required placeholder="东八区填8，西时区为负">
+                            </div>
+
+                            <div class="input-group">
+                                <label for="h_sys">
+                                    <span>宫位系统</span>
+                                </label>
+                                <select id="h_sys">
+                                    <option value="p">Placidus（普拉西德斯）</option>
+                                    <option value="k">Koch（科赫）</option>
+                                    <option value="r">Regiomontanus（雷吉蒙塔努斯）</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 生成按钮 -->
+                    <button id="submitBtn">生成星盘解析</button>
+
+                    <!-- 结果区域 -->
+                    <div id="result">
+                        <div class="loading" style="display: none;">星体运行计算中...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 五子棋弹窗 ==================== -->
+    <div class="gomoku-modal" id="gomokuModal">
+        <div class="gomoku-dialog">
+            <!-- 头部 -->
+            <div class="gomoku-header">
+                <h2>○● 魔法棋局</h2>
+                <p>专业级五子棋AI对战</p>
+                <button class="close-btn" onclick="closeGomoku()">✕</button>
+            </div>
+            
+            <!-- 游戏主区域 -->
+            <div class="gomoku-body">
+                <div class="gomoku-game-area">
+                    <!-- 棋盘区域 -->
+                    <div class="gomoku-board-container">
+                        <canvas id="gomokuBoard" width="600" height="600"></canvas>
+                    </div>
+                    
+                    <!-- 控制面板 -->
+                    <div class="gomoku-controls">
+                        <!-- 游戏控制 -->
+                        <div class="gomoku-panel">
+                            <h3 class="gomoku-panel-title">游戏控制</h3>
+                            <div class="gomoku-color-selector">
+                                <button id="gomokuBlackBtn" class="gomoku-color-btn selected">黑棋</button>
+                                <button id="gomokuWhiteBtn" class="gomoku-color-btn white-btn">白棋</button>
+                            </div>
+                            <div class="gomoku-btn-group">
+                                <button id="gomokuStartBtn" class="gomoku-btn">开始游戏</button>
+                                <button id="gomokuRestartBtn" class="gomoku-btn">重新开始</button>
+                                <button id="gomokuUndoBtn" class="gomoku-btn">悔棋</button>
+                                <button id="gomokuSettingsBtn" class="gomoku-btn">AI设置</button>
+                            </div>
+                        </div>
+                        
+                        <!-- 游戏状态 -->
+                        <div class="gomoku-panel">
+                            <h3 class="gomoku-panel-title">游戏状态</h3>
+                            <div class="gomoku-status" id="gomokuStatus">选择执棋方后开始游戏</div>
+                            <div class="gomoku-ai-info">
+                                <div class="gomoku-info-item">
+                                    <div class="gomoku-info-label">AI等级</div>
+                                    <div class="gomoku-info-value" id="gomokuAiLevel">专业级</div>
+                                </div>
+                                <div class="gomoku-info-item">
+                                    <div class="gomoku-info-label">思考时间</div>
+                                    <div class="gomoku-info-value"><span id="gomokuTimeLimit">3000</span>ms</div>
+                                </div>
+                                <div class="gomoku-info-item">
+                                    <div class="gomoku-info-label">搜索深度</div>
+                                    <div class="gomoku-info-value" id="gomokuDepth">4</div>
+                                </div>
+                                <div class="gomoku-info-item">
+                                    <div class="gomoku-info-label">候选点数</div>
+                                    <div class="gomoku-info-value" id="gomokuCandidates">15</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 设置面板遮罩 -->
+        <div class="gomoku-settings-overlay" id="gomokuSettingsOverlay"></div>
+        
+        <!-- 设置面板 -->
+        <div class="gomoku-settings-panel" id="gomokuSettingsPanel">
+            <h2 class="gomoku-settings-title">AI设置</h2>
+            
+            <div class="gomoku-settings-group">
+                <div class="gomoku-settings-row">
+                    <span class="gomoku-settings-label">思考时间上限</span>
+                    <span class="gomoku-settings-value"><span id="gomokuThinkingTimeValue">3000</span>ms</span>
+                </div>
+                <input type="range" id="gomokuThinkingTimeRange" class="gomoku-settings-range" 
+                       min="1000" max="10000" step="500" value="3000">
+            </div>
+            
+            <div class="gomoku-settings-group">
+                <div class="gomoku-settings-row">
+                    <span class="gomoku-settings-label">搜索深度</span>
+                    <span class="gomoku-settings-value" id="gomokuSearchDepthValue">4</span>
+                </div>
+                <input type="range" id="gomokuSearchDepthRange" class="gomoku-settings-range" 
+                       min="2" max="8" step="1" value="4">
+            </div>
+            
+            <div class="gomoku-settings-group">
+                <div class="gomoku-settings-row">
+                    <span class="gomoku-settings-label">候选点数量</span>
+                    <span class="gomoku-settings-value" id="gomokuCandidateCountValue">15</span>
+                </div>
+                <input type="range" id="gomokuCandidateCountRange" class="gomoku-settings-range" 
+                       min="8" max="30" step="1" value="15">
+            </div>
+            
+            <div class="gomoku-settings-group">
+                <div class="gomoku-settings-row">
+                    <span class="gomoku-settings-label">显示AI候选点</span>
+                    <label class="gomoku-toggle-switch">
+                        <input type="checkbox" id="gomokuShowCandidatesToggle" checked>
+                        <span class="gomoku-toggle-slider"></span>
+                    </label>
+                </div>
+                <p class="gomoku-settings-hint">开启后将在棋盘上显示AI计算的候选点及分数，金色标记为最佳落子点</p>
+            </div>
+            
+            <div class="gomoku-settings-buttons"></div>
+                <button id="gomokuSaveSettingsBtn" class="gomoku-settings-btn save">保存</button>
+                <button id="gomokuCancelSettingsBtn" class="gomoku-settings-btn cancel">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 海德平衡理论弹窗 ==================== -->
+    <div class="heider-modal" id="heiderModal">
+        <div class="heider-dialog">
+            <!-- 头部 -->
+            <div class="heider-header">
+                <h2>海德平衡理论</h2>
+                <p>多人网络演化可视化 · 探索人际关系的平衡奥秘</p>
+                <button class="close-btn" onclick="closeHeiderBalance()">✕</button>
+            </div>
+            
+            <!-- 主体区域 -->
+            <div class="heider-body">
+                <!-- 左侧控制面板 -->
+                <div class="heider-control-panel">
+                    <!-- 网络设置 -->
+                    <div class="heider-control-group">
+                        <h3>网络设置</h3>
+                        <div class="heider-input-group">
+                            <label>人数 (N):</label>
+                            <input type="number" id="heiderNodeCount" min="3" max="30" value="4" onchange="heiderUpdateNodeCount()">
+                        </div>
+                        <button class="heider-btn heider-btn-primary" onclick="heiderGenerateNetwork()">生成新网络</button>
+                        <button class="heider-btn heider-btn-secondary" onclick="heiderRandomizeRelations()">随机化关系</button>
+                        <!-- 人物档案 -->
+                        <div id="heiderProfileEditors" style="margin-top: 15px;">
+                            <div class="heider-profile-toggle" onclick="heiderToggleProfileEditor()">
+                                <span>人物档案</span>
+                                <span class="heider-profile-arrow" id="heiderProfileArrow">▶</span>
+                            </div>
+                            <div id="heiderProfileContainer" class="heider-hidden"></div>
+                        </div>
+                    </div>
+
+                    <!-- 显示设置 -->
+                    <div class="heider-control-group">
+                        <h3>显示设置</h3>
+                        <div class="heider-checkbox-group">
+                            <label>显示节点:</label>
+                            <input type="checkbox" id="heiderShowNodes" checked onchange="heiderToggleNodeVisibility()">
+                        </div>
+                        <div class="heider-checkbox-group">
+                            <label>小团体分离:</label>
+                            <input type="checkbox" id="heiderEnableSeparation" checked>
+                        </div>
+                    </div>
+
+                    <!-- 演化控制 -->
+                    <div class="heider-control-group">
+                        <h3>演化控制</h3>
+                        <div class="heider-input-group">
+                            <label>演化速度:</label>
+                            <select id="heiderEvolutionSpeed">
+                                <option value="1000">慢</option>
+                                <option value="500" selected>中</option>
+                                <option value="100">快</option>
+                            </select>
+                        </div>
+                        <button class="heider-btn heider-btn-primary" id="heiderEvolveBtn" onclick="heiderToggleEvolution()">开始演化</button>
+                        <button class="heider-btn heider-btn-secondary" onclick="heiderResetView()">重置视图</button>
+                    </div>
+
+                    <!-- 网络统计 -->
+                    <div class="heider-control-group">
+                        <h3>网络统计</h3>
+                        <div class="heider-stats">
+                            <div class="heider-formula">总三元组数 = C(N,3) = N(N-1)(N-2)/6</div>
+                            <div class="heider-stat-item">
+                                <span>节点数 (N):</span>
+                                <span class="heider-stat-value" id="heiderNodeCountStat">4</span>
+                            </div>
+                            <div class="heider-stat-item">
+                                <span>关系数:</span>
+                                <span class="heider-stat-value" id="heiderLinkCountStat">6</span>
+                            </div>
+                            <div class="heider-stat-item">
+                                <span>平衡三元组:</span>
+                                <span class="heider-stat-value" id="heiderBalancedTripletsStat">0</span>
+                            </div>
+                            <div class="heider-stat-item">
+                                <span>不平衡三元组:</span>
+                                <span class="heider-stat-value" id="heiderUnbalancedTripletsStat">0</span>
+                            </div>
+                            <div class="heider-stat-item">
+                                <span>完美三元组:</span>
+                                <span class="heider-stat-value" id="heiderCliqueCountStat">0</span>
+                            </div>
+                            <div class="heider-stat-item">
+                                <span>小团体数:</span>
+                                <span class="heider-stat-value" id="heiderMaxCliqueCountStat">0</span>
+                            </div>
+                            <div class="heider-stat-item">
+                                <span>网络状态:</span>
+                                <span class="heider-stat-value">
+                                    <span class="heider-status-indicator" id="heiderStatusIndicator"></span>
+                                    <span id="heiderNetworkStatus">不平衡</span>
+                                </span>
+                            </div>
+                            <div class="heider-definition">
+                                <strong>完美三元组</strong>: 三个节点之间所有关系均为"好"的三元组
+                            </div>
+                            <div class="heider-definition">
+                                <strong>小团体</strong>: 所有关系均为"好"的最大群体（N≥2）
+                            </div>
+                            <div class="heider-progress-bar">
+                                <div class="heider-progress-fill" id="heiderBalanceProgress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 基本理论 -->
+                    <div class="heider-control-group">
+                        <h3>基本理论</h3>
+                        <p class="heider-theory-intro">平衡三元组: 关系乘积为正（全好或两坏一好）<br>不平衡三元组: 关系乘积为负（一坏两好或全坏）</p>
+                        <div class="heider-theory-container">
+                            <div class="heider-theory-item balanced" onclick="heiderShowTheoryDescription(1)">
+                                <svg viewBox="0 0 100 100">
+                                    <line x1="20" y1="80" x2="50" y2="20" class="heider-link-positive" stroke-width="3"/>
+                                    <line x1="50" y1="20" x2="80" y2="80" class="heider-link-positive" stroke-width="3"/>
+                                    <line x1="80" y1="80" x2="20" y2="80" class="heider-link-positive" stroke-width="3"/>
+                                    <circle cx="20" cy="80" r="8" fill="#4285F4"/>
+                                    <circle cx="50" cy="20" r="8" fill="#4285F4"/>
+                                    <circle cx="80" cy="80" r="8" fill="#4285F4"/>
+                                </svg>
+                                <div class="heider-theory-label">全好 ✓</div>
+                            </div>
+                            <div class="heider-theory-item balanced" onclick="heiderShowTheoryDescription(2)">
+                                <svg viewBox="0 0 100 100">
+                                    <line x1="20" y1="80" x2="50" y2="20" class="heider-link-positive" stroke-width="3"/>
+                                    <line x1="50" y1="20" x2="80" y2="80" class="heider-link-negative" stroke-width="3"/>
+                                    <line x1="80" y1="80" x2="20" y2="80" class="heider-link-negative" stroke-width="3"/>
+                                    <circle cx="20" cy="80" r="8" fill="#4285F4"/>
+                                    <circle cx="50" cy="20" r="8" fill="#4285F4"/>
+                                    <circle cx="80" cy="80" r="8" fill="#4285F4"/>
+                                </svg>
+                                <div class="heider-theory-label">两坏一好 ✓</div>
+                            </div>
+                            <div class="heider-theory-item unbalanced" onclick="heiderShowTheoryDescription(5)">
+                                <svg viewBox="0 0 100 100">
+                                    <line x1="20" y1="80" x2="50" y2="20" class="heider-link-positive" stroke-width="3"/>
+                                    <line x1="50" y1="20" x2="80" y2="80" class="heider-link-positive" stroke-width="3"/>
+                                    <line x1="80" y1="80" x2="20" y2="80" class="heider-link-negative" stroke-width="3"/>
+                                    <circle cx="20" cy="80" r="8" fill="#4285F4"/>
+                                    <circle cx="50" cy="20" r="8" fill="#4285F4"/>
+                                    <circle cx="80" cy="80" r="8" fill="#4285F4"/>
+                                </svg>
+                                <div class="heider-theory-label">两好一坏 ✗</div>
+                            </div>
+                            <div class="heider-theory-item unbalanced" onclick="heiderShowTheoryDescription(8)">
+                                <svg viewBox="0 0 100 100">
+                                    <line x1="20" y1="80" x2="50" y2="20" class="heider-link-negative" stroke-width="3"/>
+                                    <line x1="50" y1="20" x2="80" y2="80" class="heider-link-negative" stroke-width="3"/>
+                                    <line x1="80" y1="80" x2="20" y2="80" class="heider-link-negative" stroke-width="3"/>
+                                    <circle cx="20" cy="80" r="8" fill="#4285F4"/>
+                                    <circle cx="50" cy="20" r="8" fill="#4285F4"/>
+                                    <circle cx="80" cy="80" r="8" fill="#4285F4"/>
+                                </svg>
+                                <div class="heider-theory-label">全坏 ✗</div>
+                            </div>
+                        </div>
+                        <div class="heider-theory-description" id="heiderTheoryDescription">
+                            <h4>海德平衡理论</h4>
+                            <p>人际关系网络会自发趋向平衡状态。平衡的三元组中，关系乘积为正；不平衡的三元组会通过改变关系达到平衡，最终形成稳定的小团体结构。</p>
+                            <p><a href="https://www.bilibili.com/video/BV12t4y187do/" target="_blank" style="color: #4682b4; text-decoration: underline;">理论视频点击这里</a></p>
+                        </div>
+                    </div>
+
+                    <!-- 操作说明 -->
+                    <div class="heider-control-group">
+                        <h3>💡 操作说明</h3>
+                        <p class="heider-help-text">
+                            • 点击边可切换关系状态<br>
+                            • 拖动节点可调整位置<br>
+                            • 演化过程会自动平衡网络<br>
+                            • 平衡后形成稳定小团体<br>
+                            • 可隐藏节点只显示关系连线
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 右侧可视化区域 -->
+                <div class="heider-visualization">
+                    <svg id="heider-network-svg"></svg>
+                    <div class="heider-tooltip" id="heiderTooltip"></div>
+                    <div class="heider-legend">
+                        <div class="heider-legend-item">
+                            <div class="heider-legend-color heider-legend-positive"></div>
+                            <span>关系好</span>
+                        </div>
+                        <div class="heider-legend-item">
+                            <div class="heider-legend-color heider-legend-negative"></div>
+                            <span>关系不好</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 海德平衡理论 - 图片裁剪模态框 -->
+    <div class="heider-crop-modal" id="heiderCropModal">
+        <div class="heider-crop-dialog">
+            <div class="heider-crop-header">
+                <h3>✂️ 裁剪头像</h3>
+                <button class="close-btn" onclick="heiderCloseCropModal()">✕</button>
+            </div>
+            <div class="heider-crop-body">
+                <div class="heider-crop-container">
+                    <canvas id="heiderCropCanvas"></canvas>
+                    <div class="heider-crop-box" id="heiderCropBox">
+                        <div class="heider-crop-handle heider-crop-handle-nw"></div>
+                        <div class="heider-crop-handle heider-crop-handle-ne"></div>
+                        <div class="heider-crop-handle heider-crop-handle-sw"></div>
+                        <div class="heider-crop-handle heider-crop-handle-se"></div>
+                    </div>
+                </div>
+                <div class="heider-crop-preview">
+                    <p>预览</p>
+                    <div class="heider-crop-preview-circle">
+                        <canvas id="heiderPreviewCanvas"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="heider-crop-footer">
+                <button class="heider-btn heider-btn-secondary" onclick="heiderCloseCropModal()">取消</button>
+                <button class="heider-btn heider-btn-primary" onclick="heiderApplyCrop()">确认裁剪</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MBTI研究模态框 -->
+    <div class="mbti-modal" id="mbtiModal">
+        <div class="mbti-dialog">
+            <div class="mbti-header">
+                <h2>VRChat 荣格衍生模型调研</h2>
+                <p>基于 MBTI 的虚拟社群人格分布研究</p>
+                <button class="close-btn" onclick="closeMBTIResearch()">×</button>
+            </div>
+            
+            <!-- 免责声明 -->
+            <div class="mbti-disclaimer">
+                ⚠️ 免责声明：本调研数据存在样本偏差，研究方法不完全严谨，结果仅供娱乐参考，不具备学术权威性。请勿将本数据用于任何正式场合或作为决策依据。
+            </div>
+            
+            <div class="mbti-body">
+                <!-- 统计概览 -->
+                <div class="mbti-stats-overview">
+                    <div class="mbti-stat-card">
+                        <div class="mbti-stat-number" id="mbtiTotalCount">0</div>
+                        <div class="mbti-stat-label">总样本数</div>
+                    </div>
+                    <div class="mbti-stat-card">
+                        <div class="mbti-stat-number" id="mbtiMaleCount">0</div>
+                        <div class="mbti-stat-label">男性</div>
+                    </div>
+                    <div class="mbti-stat-card">
+                        <div class="mbti-stat-number" id="mbtiFemaleCount">0</div>
+                        <div class="mbti-stat-label">女性</div>
+                    </div>
+                    <div class="mbti-stat-card">
+                        <div class="mbti-stat-number" id="mbtiUnknownCount">0</div>
+                        <div class="mbti-stat-label">未知</div>
+                    </div>
+                </div>
+
+                <!-- 图表标签页切换 -->
+                <div class="mbti-tabs">
+                    <button class="mbti-tab active" onclick="switchMBTITab('reality')" data-tab="reality">
+                        VRChat vs 现实
+                    </button>
+                    <button class="mbti-tab" onclick="switchMBTITab('gender')" data-tab="gender">
+                        男性 vs 女性
+                    </button>
+                </div>
+
+                <!-- 图表区域：VRChat vs 现实 -->
+                <div class="mbti-charts mbti-tab-content active" id="mbtiChartsReality">
+                    <!-- 认知功能放在第一行 -->
+                    <div class="mbti-chart-container">
+                        <h3>VRChat 中文区 认知功能 与现实的对比</h3>
+                        <canvas id="mbtiCognitiveFuncChart"></canvas>
+                    </div>
+                    <div class="mbti-chart-container">
+                        <h3>VRChat 中文区 认知功能 与现实的差异排序</h3>
+                        <canvas id="mbtiCognitiveFuncDiffChart"></canvas>
+                    </div>
+                    <!-- MBTI类型 -->
+                    <div class="mbti-chart-container">
+                        <h3>VRChat 中文区 MBTI 类型分布与排序 与现实的对比</h3>
+                        <canvas id="mbtiTypeChart"></canvas>
+                    </div>
+                    <div class="mbti-chart-container">
+                        <h3>VRChat 中文区 MBTI 类型分布与排序 与现实的差异排序</h3>
+                        <canvas id="mbtiTypeDiffChart"></canvas>
+                    </div>
+                    <!-- Keirsey气质 -->
+                    <div class="mbti-chart-container">
+                        <h3>VRChat 中文区 Keirsey气质分类 与现实的对比</h3>
+                        <canvas id="mbtiKeirseyChart"></canvas>
+                    </div>
+                    <div class="mbti-chart-container">
+                        <h3>VRChat 中文区 Keirsey气质分类 与现实的差异排序</h3>
+                        <canvas id="mbtiKeirseyDiffChart"></canvas>
+                    </div>
+                    <!-- 四个维度 -->
+                    <div class="mbti-chart-container">
+                        <h3>VRChat 中文区 MBTI 四个维度 与现实的对比</h3>
+                        <canvas id="mbtiDimensionChart"></canvas>
+                    </div>
+                    <div class="mbti-chart-container">
+                        <h3>VRChat 中文区 MBTI 四个维度 与现实的差异排序</h3>
+                        <canvas id="mbtiDimensionDiffChart"></canvas>
+                    </div>
+                    <!-- OPS理论 -->
+                    <div class="mbti-chart-container">
+                        <h3>VRChat 中文区 OPS理论 与现实的对比</h3>
+                        <canvas id="mbtiOPSChart"></canvas>
+                    </div>
+                    <div class="mbti-chart-container">
+                        <h3>VRChat 中文区 OPS理论 与现实的差异排序</h3>
+                        <canvas id="mbtiOPSDiffChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- 图表区域：男性 vs 女性 -->
+                <div class="mbti-charts mbti-tab-content" id="mbtiChartsGender">
+                    <!-- 认知功能放在第一行 -->
+                    <div class="mbti-chart-container">
+                        <h3>VRChat 中文区 认知功能 男女对比</h3>
+                        <canvas id="mbtiCognitiveFuncGenderChart"></canvas>
+                    </div>
+                    <div class="mbti-chart-container">
+                        <h3>VRChat 中文区 认知功能 男女差异排序</h3>
+                        <canvas id="mbtiCognitiveFuncGenderDiffChart"></canvas>
+                    </div>
+                    <!-- MBTI类型 -->
+                    <div class="mbti-chart-container">
+                        <h3>VRChat 中文区 MBTI 类型分布与排序 男女对比</h3>
+                        <canvas id="mbtiTypeGenderChart"></canvas>
+                    </div>
+                    <div class="mbti-chart-container">
+                        <h3>VRChat 中文区 MBTI 类型分布与排序 男女差异排序</h3>
+                        <canvas id="mbtiTypeGenderDiffChart"></canvas>
+                    </div>
+                    <!-- Keirsey气质 -->
+                    <div class="mbti-chart-container">
+                        <h3>VRChat 中文区 Keirsey气质分类 男女对比</h3>
+                        <canvas id="mbtiKeirseyGenderChart"></canvas>
+                    </div>
+                    <div class="mbti-chart-container">
+                        <h3>VRChat 中文区 Keirsey气质分类 男女差异排序</h3>
+                        <canvas id="mbtiKeirseyGenderDiffChart"></canvas>
+                    </div>
+                    <!-- 四个维度 -->
+                    <div class="mbti-chart-container">
+                        <h3>VRChat 中文区 MBTI 四个维度 男女对比</h3>
+                        <canvas id="mbtiDimensionGenderChart"></canvas>
+                    </div>
+                    <div class="mbti-chart-container">
+                        <h3>VRChat 中文区 MBTI 四个维度 男女差异排序</h3>
+                        <canvas id="mbtiDimensionGenderDiffChart"></canvas>
+                    </div>
+                    <!-- OPS理论 -->
+                    <div class="mbti-chart-container">
+                        <h3>VRChat 中文区 OPS理论 男女对比</h3>
+                        <canvas id="mbtiOPSGenderChart"></canvas>
+                    </div>
+                    <div class="mbti-chart-container">
+                        <h3>VRChat 中文区 OPS理论 男女差异排序</h3>
+                        <canvas id="mbtiOPSGenderDiffChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- 数据表格 -->
+                <div class="mbti-table-container">
+                    <h3>原始数据</h3>
+                    <!-- 搜索栏 -->
+                    <div class="mbti-search-bar">
+                        <input type="text" id="mbtiSearchId" placeholder="搜索 ID..." oninput="filterMBTITable()">
+                        <select id="mbtiSearchGender" onchange="filterMBTITable()">
+                            <option value="">全部性别</option>
+                            <option value="男">男</option>
+                            <option value="女">女</option>
+                            <option value="未知">未知</option>
+                        </select>
+                        <select id="mbtiSearchType" onchange="filterMBTITable()">
+                            <option value="">全部 MBTI</option>
+                            <option value="INTJ">INTJ</option>
+                            <option value="INTP">INTP</option>
+                            <option value="ENTJ">ENTJ</option>
+                            <option value="ENTP">ENTP</option>
+                            <option value="INFJ">INFJ</option>
+                            <option value="INFP">INFP</option>
+                            <option value="ENFJ">ENFJ</option>
+                            <option value="ENFP">ENFP</option>
+                            <option value="ISTJ">ISTJ</option>
+                            <option value="ISFJ">ISFJ</option>
+                            <option value="ESTJ">ESTJ</option>
+                            <option value="ESFJ">ESFJ</option>
+                            <option value="ISTP">ISTP</option>
+                            <option value="ISFP">ISFP</option>
+                            <option value="ESTP">ESTP</option>
+                            <option value="ESFP">ESFP</option>
+                        </select>
+                        <button onclick="resetMBTIFilter()" class="mbti-reset-btn">重置</button>
+                        <span id="mbtiFilterCount" class="mbti-filter-count"></span>
+                    </div>
+                    <div class="mbti-table-wrapper">
+                        <table class="mbti-table" id="mbtiDataTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>性别</th>
+                                    <th colspan="2">荣格8维</th>
+                                    <th>MBTI</th>
+                                </tr>
+                                <tr class="sub-header">
+                                    <th></th>
+                                    <th></th>
+                                    <th>阳面（意识）</th>
+                                    <th>阴面（潜意识）</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="mbtiTableBody">
+                                <!-- 数据将通过JS填充 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 社团详情模态框 -->
+    <div class="guild-detail-modal" id="guildDetailModal">
+        <div class="guild-detail-content" id="guildDetailContent">
+            <button class="close-btn" onclick="closeGuildDetail()">×</button>
+            <!-- 详情内容将通过JS动态填充 -->
+        </div>
+    </div>
+
+    <script src="https://images.robustcn.com/public/static/module/common/jquery/jquery-2.2.3.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <!-- 主功能脚本 -->
+    <script src="js/app.js"></script>
+</body>
+</html>
